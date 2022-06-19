@@ -4,58 +4,91 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-private TextView Screen;
-private String input="",Answer;
+    private TextView Screen;
+    private String input="",Answer;
     private boolean clearResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
         Screen=findViewById(R.id.screen);
     }
     public void ButtonClick(View view){
         Button button= (Button) view;
         String data=button.getText().toString();
-        switch (data){
-            case "AC":
-                input="";
+
+        switch (data) {
+            case "⬅":
+                if (input.length() > 0) {
+                    clearResult = false;
+                    input = input.substring(0, input.length() - 1);
+                }
                 break;
-            case "∗":
-                clearResult=false;
-                Solve();
-                input+="*";
+            case "C":
+                input = "";
                 break;
             case "^":
-                clearResult=false;
-                Solve();
-                input+="^";
+                clearResult = false;
+                Resolve();
+                input += "^";
+                break;
+            case "∗":
+                clearResult = false;
+                Resolve();
+                input += "*";
+                break;
+            case "%":
+                clearResult = false;
+                input += "%";
+                Resolve();
+                break;
+            case "⅟":
+                clearResult = false;
+                Resolve();
+                input = "1/" + input;
+                break;
+            case "√":
+                clearResult = false;
+                Resolve();
+                input = "√" + input;
+                break;
+            case "±":
+                clearResult = false;
+                try {
+                    //trouver le signe du nombre
+                    double sign = Math.signum(Double.parseDouble(input));
+                    //inverser le signe ou vider le input si on ne reçoit pas un numero
+                    if ( sign == -1.0){
+                        input="+"+input;
+                    }else if (sign == 1.0) {
+                        input = "-"+input;
+                    }else{
+                        input = "";
+                    }
+                } catch (Exception e) {
+                    Log.e("Error", e.toString());
+                }
                 break;
             case "=":
                 clearResult=true;
-                Solve();
+                Resolve();
                 Answer=input;
                 break;
-            case "⬅":
-                if(input.length()>0){
-                    clearResult=false;
-                    input=input.substring(0,input.length()-1);
-                }
-                break;
+
             default:
                 if(input==null){
                     input="";
                 }
-                if(data.equals("+") || data.equals("-") || data.equals("/")){
+                if(data.equals("+") || data.equals("-") || data.equals("/")){ //
                     clearResult=false;
-                    Solve();
+                    Resolve();
                 }
                 else if(clearResult){
                     input="";
@@ -65,7 +98,7 @@ private String input="",Answer;
         }
         Screen.setText(input);
     }
-    public void Solve(){
+    public void Resolve(){
         if(input.split("\\*").length==2){
             String[] numbers =input.split("\\*");
             try{
@@ -73,7 +106,6 @@ private String input="",Answer;
                 input=mul+"";
             }
             catch (Exception e){
-                //Display error
                 Log.e("Error", e.toString());
             }
         }
@@ -84,7 +116,6 @@ private String input="",Answer;
                 input=div+"";
             }
             catch (Exception e){
-                //Display error
                 Log.e("Error", e.toString());
             }
         }
@@ -95,7 +126,6 @@ private String input="",Answer;
                 input=pow+"";
             }
             catch (Exception e){
-                //Display error
                 Log.e("Error", e.toString());
             }
         }
@@ -106,7 +136,6 @@ private String input="",Answer;
                 input=sum+"";
             }
             catch (Exception e){
-                //Display error
                 Log.e("Error", e.toString());
             }
         }
@@ -130,7 +159,41 @@ private String input="",Answer;
                 Log.e("Error", e.toString());
             }
         }
-        String[] n =input.split("\\.");
+        else if(input.contains("%")){
+            String[] numbers = input.split("%");
+            try{
+                double percent = Double.parseDouble(numbers[0])/100.0;
+                input = percent+"";
+            }
+            catch (Exception e){
+                //Display error
+                Log.e("Error", e.toString());
+                input = "";
+            }
+        }
+        else if(input.split("⅟").length==2){
+            String[] numbers = input.split("⅟");
+            try{
+                Log.i("recip",numbers[0]);
+                double recip = 1/Double.parseDouble(numbers[0]);
+                input = recip+"";
+            }
+            catch (Exception e){
+                //Display error
+                Log.e("Error", e.toString());
+            }
+        }
+        else if(input.contains("√")){
+            String[] numbers = input.split("√");
+            try{
+                double sqrt = Math.sqrt(Double.parseDouble(numbers[1]));
+                input = sqrt+"";
+            }
+            catch (Exception e){
+                Log.e("Error", e.toString());
+            }
+        }
+        String[] n = input.split("\\.");
         if(n.length>1){
             if(n[1].equals("0")){
                 input=n[0];

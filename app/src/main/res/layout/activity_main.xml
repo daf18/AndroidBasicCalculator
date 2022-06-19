@@ -12,16 +12,16 @@
         android:gravity="center|end"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:textColor="#000002"
-        android:textSize="30sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:background="#BDBABD"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
         android:padding="5dp"
         android:layout_marginHorizontal="10dp"
-        android:maxLines="1"/>
+       />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -46,9 +46,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:onClick="ButtonClick"
-            android:text="@string/ac"
+            android:text="@string/c"
             android:layout_margin="5dp"
-            android:textColor="#000000"
+            android:textColor="#DC4343"
             android:textSize="30sp"
             android:backgroundTint="#9FAFCF"
             style="?android:attr/buttonBarButtonStyle" />
@@ -62,7 +62,7 @@
             android:text="@string/power"
             android:layout_margin="5dp"
             android:textColor="#000000"
-            android:textSize="35sp"
+            android:textSize="30sp"
             android:backgroundTint="#9FAFCF"
             style="?android:attr/buttonBarButtonStyle" />
 
